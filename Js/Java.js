@@ -1,48 +1,48 @@
-alert("¡Bienvenido a tu Calculadora!")
+// Array para almacenar los resultados como objetos
+let resultados = JSON.parse(localStorage.getItem("resultados")) || [];
 
-// Función para realizar la operación
-function calcular(operador, num1, num2) {
-    switch (operador) {
-        case '+':
-            return num1 + num2;
-        case '-':
-            return num1 - num2;
-        case '*':
-            return num1 * num2;
-        case '/':
-            return num2 !== 0 ? num1 / num2 : 'Error: División por cero';
-        default:
-            return 'Operador no válido';
-    }
+// Función de orden superior para calcular
+const calcular = (operador, num1, num2) => {
+    const operaciones = {
+        '+': (a, b) => a + b,
+        '-': (a, b) => a - b,
+        '*': (a, b) => a * b,
+        '/': (a, b) => b !== 0 ? a / b : 'Error: División por cero'
+    };
+    return operaciones[operador] ? operaciones[operador](num1, num2) : 'Operador no válido';
+};
+
+// Evento para realizar la operación
+document.getElementById("calcularBtn").addEventListener("click", () => {
+    const numero1 = parseFloat(document.getElementById("numero1").value);
+    const operador = document.getElementById("operador").value;
+    const numero2 = parseFloat(document.getElementById("numero2").value);
+
+    // Realizar el cálculo
+    const resultado = calcular(operador, numero1, numero2);
+
+    // Crear objeto de operación
+    const operacion = { numero1, operador, numero2, resultado };
+    resultados.push(operacion);
+
+    // Guardar en localStorage
+    localStorage.setItem("resultados", JSON.stringify(resultados));
+
+    // Mostrar el resultado en la lista
+    mostrarResultados();
+});
+
+// Función para mostrar resultados
+function mostrarResultados() {
+    const lista = document.getElementById("resultados");
+    lista.innerHTML = ''; // Limpiar la lista antes de agregar resultados
+
+    resultados.forEach((op) => {
+        const item = document.createElement("li");
+        item.textContent = `${op.numero1} ${op.operador} ${op.numero2} = ${op.resultado}`;
+        lista.appendChild(item);
+    });
 }
 
-// Función principal de la calculadora
-function calculadora() {
-    let continuar = true;
-    let resultados = [];
-
-    while (continuar) {
-        // Inresar numero y signo
-        let numero1 = parseFloat(prompt("Ingresa el primer número:"));
-        let operador = prompt("Ingresa el operador (+, -, *, /):");
-        let numero2 = parseFloat(prompt("Ingresa el segundo número:"));
-
-        // Aca realiza el calculo
-        let resultado = calcular(operador, numero1, numero2);
-
-        // Muestra el resultado y lo guarda en el array de resultados
-        alert(`Resultado: ${resultado}`);
-        resultados.push(resultado);
-
-        continuar = confirm("¿Quieres hacer otra operación?");
-    }
-
-    alert("¡Gracias por usar el programa!")
-
-    // Al terminar muestra los resultados en la consola
-    console.log("Resultados de todas las operaciones:");
-    console.log(resultados);
-}
-
-// Vuelve al inicio
-calculadora();
+// Cargar resultados almacenados al iniciar
+mostrarResultados();

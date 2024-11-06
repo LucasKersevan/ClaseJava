@@ -1,12 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora</title>
+    <link rel="stylesheet" href="./Css/Style.css">
     <script defer src="./Js/Java.js"></script>
-    <title>Calculadora Cientifica</title>
 </head>
 <body>
-    <h1>Lucas Kersevan</h1>
+    <h1>Calculadora</h1>
+    <div>
+        <input type="number" id="numero1" placeholder="Primer número">
+        <select id="operador">
+            <option value="+">+</option>
+            <option value="-">-</option>
+            <option value="*">*</option>
+            <option value="/">/</option>
+        </select>
+        <input type="number" id="numero2" placeholder="Segundo número">
+        <button id="calcularBtn">Calcular</button>
+    </div>
+    <h2>Resultados</h2>
+    <ul id="resultados"></ul>
 </body>
 </html>
